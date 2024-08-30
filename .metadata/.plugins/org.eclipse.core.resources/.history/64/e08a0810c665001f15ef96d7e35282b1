@@ -1,0 +1,29 @@
+package com.test.qqdelivery.controller;
+
+import com.test.qqdelivery.model.Person;
+import com.test.qqdelivery.service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
+
+@RestController
+@RequestMapping("/v1/person")
+public class PersonController {
+
+    @Autowired
+    private PersonService personService;
+
+    @PostMapping
+    public Person createPerson(@RequestBody Person person, Principal principal) {
+        person.setCreatedBy(principal.getName());
+        return personService.savePerson(person);
+    }
+
+    @GetMapping
+    public List<Person> getPersons(Principal principal) {
+        // Optional: Implement additional logic to use the principal for authorization
+        return personService.getAllPersons();
+    }
+}

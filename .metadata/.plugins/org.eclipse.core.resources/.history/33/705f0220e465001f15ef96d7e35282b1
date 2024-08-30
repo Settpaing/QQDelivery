@@ -1,0 +1,10 @@
+package com.demo.demorest.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.demo.demorest.domain.Student;
+
+@Repository
+public interface StudentRepository extends JpaRepository<Student,Integer>{
+
+}

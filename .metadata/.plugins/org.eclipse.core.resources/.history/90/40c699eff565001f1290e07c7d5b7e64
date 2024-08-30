@@ -1,0 +1,42 @@
+package com.test.qqdelivery.controller;
+
+import com.test.qqdelivery.model.Person;
+import com.test.qqdelivery.repository.PersonRepository;
+import com.test.qqdelivery.service.OAuth2Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/v1/person")
+public class PersonController {
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
+    private OAuth2Service oAuth2Service;
+
+    @PostMapping
+    @PreAuthorize("hasAuthority('USER_WRITE')")
+    public ResponseEntity<?> savePerson(@RequestBody Person person) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        person.setCreatedBy(username);
+        personRepository.save(person);
+        return ResponseEntity.ok(person);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('USER_READ')")
+    public List<Person> getAllPersons() {
+        return personRepository.findAll();
+    }
+}

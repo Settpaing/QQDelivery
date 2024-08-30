@@ -1,0 +1,5 @@
+package com.test.qqdelivery.service;
+
+public class OAuth2Service {
+
+}

@@ -1,0 +1,5 @@
+package com.demo.qqdelivery.repository;
+
+public class PersonRepository {
+
+}

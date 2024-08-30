@@ -1,0 +1,22 @@
+package com.test.qqdelivery.service;
+
+@Service
+public class PersonService {
+  
+  @Autowired
+  private PersonRepository personRepository;
+  
+  @Autowired
+  private TokenGenerator tokenGenerator;
+  
+  public Person savePerson(Person person) {
+    // Get the current user's username
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    
+    // Set the created by field
+    person.setCreatedBy(username);
+    
+    // Save the person to the database
+    return personRepository.save(person);
+  }
+}

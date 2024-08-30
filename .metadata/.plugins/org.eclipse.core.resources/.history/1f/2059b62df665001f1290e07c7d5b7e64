@@ -1,0 +1,45 @@
+package com.test.qqdelivery.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+@Service
+public class TokenGenerator {
+  
+  @Value("${security.oauth2.client.client-id}")
+  private String clientId;
+  
+  @Value("${security.oauth2.client-secret}")
+  private String clientSecret;
+  
+  @Value("${security.oauth2.resource.token-uri}")
+  private String tokenUri;
+  
+  public String generateToken() {
+    // Create a POST request to the token endpoint
+    RestTemplate restTemplate = new RestTemplate();
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    
+    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+    params.add("grant_type", "password");
+    params.add("username", "admin");
+    params.add("password", "abc123");
+    
+    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+    
+    ResponseEntity<String> response = restTemplate.postForEntity(tokenUri, request, String.class);
+    
+    // Extract the access token from the response
+    String accessToken = response.getBody();
+    
+    return accessToken;
+  }
+}

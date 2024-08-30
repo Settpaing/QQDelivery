@@ -1,0 +1,40 @@
+package com.test.qqdelivery.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+@Service
+public class OAuth2Service {
+
+    @Value("${security.oauth2.resource.token-uri}")
+    private String tokenUri;
+
+    @Value("${security.oauth2.client.client-id}")
+    private String clientId;
+
+    @Value("${security.oauth2.client.client-secret}")
+    private String clientSecret;
+
+    public String generateToken(String username, String password) {
+        RestTemplate restTemplate = new RestTemplate();
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("username", username);
+        body.add("password", password);
+        body.add("grant_type", "password");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(clientId, clientSecret);
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(body, headers);
+        ResponseEntity<String> response = restTemplate.exchange(tokenUri, HttpMethod.POST, requestEntity, String.class);
+
+        // Extract token from response
+        // This is a simplified example; handle error cases as needed
+        return response.getBody();
+    }
+}

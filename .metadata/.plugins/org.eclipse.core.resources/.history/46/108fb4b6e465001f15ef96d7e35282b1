@@ -1,0 +1,12 @@
+package com.demo.demorest.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+public class StudentController {
+	
+	@RequestMapping("/home")
+	public String Welcome() {
+		return "welcome";
+	}
+
+}

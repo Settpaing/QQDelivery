@@ -1,0 +1,13 @@
+package com.demo.demorest.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+public class StudentController {
+	
+	@RequestMapping("/home")
+	public ResponseEntity<T> Welcome() {
+		return "welcome";
+	}
+
+}

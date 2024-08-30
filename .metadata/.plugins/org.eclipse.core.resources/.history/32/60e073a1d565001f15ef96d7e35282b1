@@ -1,0 +1,9 @@
+package com.test.qqdelivery.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.test.qqdelivery.model.Person;
+
+public interface PersonRepository extends JpaRepository<Person, Long> {
+}
+
